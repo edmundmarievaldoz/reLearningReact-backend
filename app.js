@@ -9,6 +9,8 @@ const app = new express();
 
 // endpoints -------------------------------
 
+app.get('/hello', (req, res) => res.send("Hi my name is Edmund")); // of we call on /hello it will display the message inside
+
 // start server ----------------------------
 
 const PORT = process.env.PORT || 5000;
