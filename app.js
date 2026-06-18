@@ -7,9 +7,18 @@ const app = new express();
 
 // configure middleware --------------------
 
+// controllers -----------------------------
+
+const modulesController = (req, res) => {
+    const table = 'Modules'; //name of table
+    const fields = ['ModuleID', 'ModuleCode', 'ModuleName', 'ModuleLevel', 'ModuleYearID', 'ModuleLeaderID', 'ModuleImageURL'];
+    const sql = `SELECT ${fields} FROM ${table}`;
+    res.send(sql)
+};
+
 // endpoints -------------------------------
 
-app.get('/hello', (req, res) => res.send("Hi my name is Edmund")); // of we call on /hello it will display the message inside
+app.get('/api/modules', modulesController)
 
 // start server ----------------------------
 
