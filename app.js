@@ -1,5 +1,6 @@
 // imports -----------------------------------
 import express from 'express';
+import database from './database.js';
 
 // configure express app -------------------
 const app = new express();
@@ -9,11 +10,21 @@ const app = new express();
 
 // controllers -----------------------------
 
-const modulesController = (req, res) => {
+const modulesController = async (req, res) => {
     const table = 'Modules'; //name of table
-    const fields = ['ModuleID', 'ModuleCode', 'ModuleName', 'ModuleLevel', 'ModuleYearID', 'ModuleLeaderID', 'ModuleImageURL'];
+    const fields = [
+        'ModuleID', 
+        'ModuleCode', 
+        'ModuleName', 
+        'ModuleLevel', 
+        'ModuleYearID', 
+        'ModuleLeaderID', 
+        'ModuleImageURL',
+    ];
+
     const sql = `SELECT ${fields} FROM ${table}`;
-    res.send(sql)
+    const [result] = await database.query(sql);
+    res.json(result);
 };
 
 // endpoints -------------------------------
