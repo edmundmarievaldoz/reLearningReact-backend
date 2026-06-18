@@ -12,6 +12,13 @@ const dbConfig = {
 };
 
 // Database connection --------------------
-const database = await mysql.createConnection(dbConfig);
+let database = null;
+
+try {
+database = await mysql.createConnection(dbConfig);
+} catch (error) {
+    console.log(`Error creating database connection: ${error.message}`);
+    process.exit();
+}
 
 export default database;
