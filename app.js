@@ -23,8 +23,15 @@ const modulesController = async (req, res) => {
     ];
 
     const sql = `SELECT ${fields} FROM ${table}`;
-    const [result] = await database.query(sql);
-    res.json(result);
+
+    try{
+        const [result] = await database.query(sql);
+        if(result.length === 0) res.status(404).json({message: 'No records(s) found...'});
+        else res.status(200).json(result);
+
+    }catch(error) {
+        res.status(500).json({message: 'Failed to execute query: ${error.message}'});
+    }
 };
 
 // endpoints -------------------------------
