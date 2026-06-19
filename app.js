@@ -11,8 +11,10 @@ const app = new express();
 // controllers -----------------------------
 
 const modulesController = async (req, res) => {
-    const table = 'Modules'; //name of table
-    const fields = [
+    // Initialisation ----------------------
+
+    let table = 'Modules'; //name of table
+    let fields = [
         'ModuleID', 
         'ModuleCode', 
         'ModuleName', 
@@ -21,6 +23,16 @@ const modulesController = async (req, res) => {
         'ModuleLeaderID', 
         'ModuleImageURL',
     ];
+
+    // Resolve Foreign Keys -----------------
+    
+    table = `(${table} LEFT JOIN Years ON ModuleYearID=YearID)`;
+    fields = [...fields, 'YearName AS ModuleYearName'];
+
+    table = `(${table} LEFT JOIN Users ON ModuleLeaderID=UserID)`;
+    fields = [...fields, 'CONCAT(UserFirstName, " " ,UserLastName) AS ModuleLeaderName']
+
+    // Build and execute query --------------
 
     const sql = `SELECT ${fields} FROM ${table}`;
 
