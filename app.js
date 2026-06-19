@@ -10,7 +10,7 @@ const app = new express();
 
 // controllers -----------------------------
 
-const modulesController = async (req, res) => {
+const modulesController = async (req, res, variant) => {
     // Initialisation ----------------------
 
     let table = 'Modules'; //name of table
@@ -33,8 +33,25 @@ const modulesController = async (req, res) => {
     fields = [...fields, 'CONCAT(UserFirstName, " " ,UserLastName) AS ModuleLeaderName']
 
     // Build and execute query --------------
+    let where = '';
+    const id = parseInt(req.params.id);
 
-    const sql = `SELECT ${fields} FROM ${table}`;
+    switch(variant) {
+        case 'primary':
+            where = `WHERE ModuleID=${id}`;
+        break;
+
+        case 'leader':
+            where = `WHERE ModuleLeaderID=${id}`;
+            break;
+
+         case 'users':
+            table = `(${table} INNER JOIN Modulemembers ON ModuleID=ModulememberModuleID)`;
+            where = `WHERE ModulememberUserID=${id}`;
+            break
+    }
+
+    const sql = `SELECT ${fields} FROM ${table} ${where}`;
 
     try{
         const [result] = await database.query(sql);
@@ -48,7 +65,10 @@ const modulesController = async (req, res) => {
 
 // endpoints -------------------------------
 
-app.get('/api/modules', modulesController)
+app.get('/api/modules', (req, res) => modulesController(req, res, null));
+app.get('/api/modules/:id', (req, res) =>  modulesController(req, res, 'primary'));
+app.get('/api/modules/leader/:id', (req, res) =>  modulesController(req, res, 'leader'));
+app.get('/api/modules/users/:id', (req, res) =>  modulesController(req, res, 'users'));
 
 // start server ----------------------------
 
