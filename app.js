@@ -63,12 +63,49 @@ const modulesController = async (req, res, variant) => {
     }
 };
 
+const yearsController = async (req, res, variant) => {
+    // Initialisation ----------------------
+
+    let table = 'Years'; //name of table
+    let fields = [
+        'YearID',
+        'YearName',
+    ];
+
+    // Resolve Foreign Keys -----------------
+
+    // Build and execute query --------------
+    let where = '';
+    const id = parseInt(req.params.id);
+
+    switch(variant) {
+        case 'primary':
+            where = `WHERE YearID=${id}`;
+        break;
+
+    }
+
+    const sql = `SELECT ${fields} FROM ${table} ${where}`;
+
+    try{
+        const [result] = await database.query(sql);
+        if(result.length === 0) res.status(404).json({message: 'No records(s) found...'});
+        else res.status(200).json(result);
+
+    }catch(error) {
+        res.status(500).json({message: 'Failed to execute query: ${error.message}'});
+    }
+};
+
 // endpoints -------------------------------
 
 app.get('/api/modules', (req, res) => modulesController(req, res, null));
 app.get('/api/modules/:id', (req, res) =>  modulesController(req, res, 'primary'));
 app.get('/api/modules/leader/:id', (req, res) =>  modulesController(req, res, 'leader'));
 app.get('/api/modules/users/:id', (req, res) =>  modulesController(req, res, 'users'));
+
+app.get('/api/years', (req, res) => yearsController(req, res, null));
+app.get('/api/years/:id', (req, res) =>  yearsController(req, res, 'primary'));
 
 // start server ----------------------------
 
