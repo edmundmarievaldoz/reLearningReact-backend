@@ -147,6 +147,8 @@ const usersController = async (req, res, variant) => {
         'UserImageURL',
     ];
 
+    const STAFF = 1; // Primary key for staff type in unibasedatabase Usertypes table
+
     // Resolve Foreign Keys -----------------
 
     table = `(${table} LEFT JOIN Usertypes ON UserUsertypeID=UsertypeID)`;
@@ -164,6 +166,16 @@ const usersController = async (req, res, variant) => {
         case 'primary':
             where = `WHERE UserID=${id}`;
         break;
+
+        case 'staff':
+            where = `WHERE UserUsertypeID=${STAFF}`;
+        break;
+
+        case 'groups':
+            table = `(${table} INNER JOIN Groupmembers ON UserID=GroupmemberUserID)`;
+            where = `WHERE GroupmemberGroupID=${id}`;
+        break;
+
 
     }
 
@@ -188,7 +200,10 @@ app.get('/api/modules/leader/:id', (req, res) =>  modulesController(req, res, 'l
 app.get('/api/modules/users/:id', (req, res) =>  modulesController(req, res, 'users'));
 
 app.get('/api/users', (req, res) => usersController(req, res, null));
+app.get('/api/users/staff', (req, res) =>  usersController(req, res, 'staff'));
 app.get('/api/users/:id', (req, res) =>  usersController(req, res, 'primary'));
+app.get('/api/users/groups/:id', (req, res) =>  usersController(req, res, 'groups'));
+
 
 app.get('/api/usertypes', (req, res) => usertypesController(req, res, null));
 app.get('/api/usertypes/:id', (req, res) =>  usertypesController(req, res, 'primary'));
