@@ -10,9 +10,7 @@ const app = new express();
 
 // controllers -----------------------------
 
-const modulesController = async (req, res, variant) => {
-    // Initialisation ----------------------
-
+const buildReadModulesQuery = (req, variant, ) => {
     let table = 'Modules'; //name of table
     let fields = [
         'ModuleID', 
@@ -32,7 +30,7 @@ const modulesController = async (req, res, variant) => {
     table = `(${table} LEFT JOIN Users ON ModuleLeaderID=UserID)`;
     fields = [...fields, 'CONCAT(UserFirstName, " " ,UserLastName) AS ModuleLeaderName']
 
-    // Build and execute query --------------
+    // Build and return query --------------
     let where = '';
     const id = parseInt(req.params.id);
 
@@ -51,41 +49,14 @@ const modulesController = async (req, res, variant) => {
             break
     }
 
-    const sql = `SELECT ${fields} FROM ${table} ${where}`;
-
-    try{
-        const [result] = await database.query(sql);
-        if(result.length === 0) res.status(404).json({message: 'No records(s) found...'});
-        else res.status(200).json(result);
-
-    }catch(error) {
-        res.status(500).json({message: 'Failed to execute query: ${error.message}'});
-    }
+    return `SELECT ${fields} FROM ${table} ${where}`;
+    
 };
 
-const yearsController = async (req, res, variant) => {
+const modulesController = async (req, res, variant) => {
     // Initialisation ----------------------
 
-    let table = 'Years'; //name of table
-    let fields = [
-        'YearID',
-        'YearName',
-    ];
-
-    // Resolve Foreign Keys -----------------
-
-    // Build and execute query --------------
-    let where = '';
-    const id = parseInt(req.params.id);
-
-    switch(variant) {
-        case 'primary':
-            where = `WHERE YearID=${id}`;
-        break;
-
-    }
-
-    const sql = `SELECT ${fields} FROM ${table} ${where}`;
+    const sql = buildReadModulesQuery(req, variant);
 
     try{
         const [result] = await database.query(sql);
@@ -97,41 +68,7 @@ const yearsController = async (req, res, variant) => {
     }
 };
 
-const usertypesController = async (req, res, variant) => {
-    // Initialisation ----------------------
-
-    let table = 'Usertypes'; //name of table
-    let fields = [
-        'UsertypeID',
-        'UsertypeName',
-    ];
-
-    // Resolve Foreign Keys -----------------
-
-    // Build and execute query --------------
-    let where = '';
-    const id = parseInt(req.params.id);
-
-    switch(variant) {
-        case 'primary':
-            where = `WHERE UsertypeID=${id}`;
-        break;
-
-    }
-
-    const sql = `SELECT ${fields} FROM ${table} ${where}`;
-
-    try{
-        const [result] = await database.query(sql);
-        if(result.length === 0) res.status(404).json({message: 'No records(s) found...'});
-        else res.status(200).json(result);
-
-    }catch(error) {
-        res.status(500).json({message: 'Failed to execute query: ${error.message}'});
-    }
-};
-
-const usersController = async (req, res, variant) => {
+const buildReadUsersQuery = (req, variant) => {
     // Initialisation ----------------------
 
     let table = 'Users'; //name of table
@@ -158,7 +95,7 @@ const usersController = async (req, res, variant) => {
     fields = [...fields, 'YearName AS UserYearName'];
 
 
-    // Build and execute query --------------
+    // Build and return query --------------
     let where = '';
     const id = parseInt(req.params.id);
 
@@ -176,10 +113,16 @@ const usersController = async (req, res, variant) => {
             where = `WHERE GroupmemberGroupID=${id}`;
         break;
 
-
     }
 
-    const sql = `SELECT ${fields} FROM ${table} ${where}`;
+    return `SELECT ${fields} FROM ${table} ${where}`;
+
+};
+
+const usersController = async (req, res, variant) => {
+
+    const sql = buildReadUsersQuery(req, variant);
+ 
 
     try{
         const [result] = await database.query(sql);
@@ -191,6 +134,85 @@ const usersController = async (req, res, variant) => {
     }
 };
 
+const buildReadUsertypesQuery = (req, variant) => {
+    // Initialisation ----------------------
+
+    let table = 'Usertypes'; //name of table
+    let fields = [
+        'UsertypeID',
+        'UsertypeName',
+    ];
+
+    // Resolve Foreign Keys -----------------
+
+    // Build and return query --------------
+    let where = '';
+    const id = parseInt(req.params.id);
+
+    switch(variant) {
+        case 'primary':
+            where = `WHERE UsertypeID=${id}`;
+        break;
+
+    }
+
+   return `SELECT ${fields} FROM ${table} ${where}`;
+
+};
+
+const usertypesController = async (req, res, variant) => {
+
+    const sql = buildReadUsertypesQuery(req, variant);
+
+    try{
+        const [result] = await database.query(sql);
+        if(result.length === 0) res.status(404).json({message: 'No records(s) found...'});
+        else res.status(200).json(result);
+
+    }catch(error) {
+        res.status(500).json({message: 'Failed to execute query: ${error.message}'});
+    }
+};
+
+const buildReadYearsQuery = (req, variant) => {
+    // Initialisation ----------------------
+
+    let table = 'Years'; //name of table
+    let fields = [
+        'YearID',
+        'YearName',
+    ];
+
+    // Resolve Foreign Keys -----------------
+
+    // Build and read query --------------
+    let where = '';
+    const id = parseInt(req.params.id);
+
+    switch(variant) {
+        case 'primary':
+            where = `WHERE YearID=${id}`;
+        break;
+
+    }
+
+    return `SELECT ${fields} FROM ${table} ${where}`;
+
+};
+
+const yearsController = async (req, res, variant) => {
+
+    const sql = buildReadYearsQuery(req, variant);
+
+    try{
+        const [result] = await database.query(sql);
+        if(result.length === 0) res.status(404).json({message: 'No records(s) found...'});
+        else res.status(200).json(result);
+
+    }catch(error) {
+        res.status(500).json({message: 'Failed to execute query: ${error.message}'});
+    }
+};
 
 // endpoints -------------------------------
 
