@@ -8,7 +8,7 @@ class Controller {
     get = async (req, res, variant) => {
         // Initialisation ----------------------
 
-        sql = this.buildReadQuery(req, variant);
+       const sql = this.buildReadQuery(req, variant);
 
         try{
             const [result] = await this.database.query(sql);
