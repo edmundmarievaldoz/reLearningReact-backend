@@ -15,15 +15,15 @@ model.fields = [
 
 model.buildCreateQuery = (req) => {
     // Initialisations---------------------
-    const record = req.body;
-
     return `INSERT INTO ${model.table} SET 
-    UserFirstname='${record['UserFirstname']}',
-    UserLastname='${record['UserLastname']}',
-    UserEmail='${record['UserEmail']}',
-    UserRegistered='${record['UserRegistered']}',
-    UserLevel='${record['UserLevel']}',
-    UserImageURL='${record['UserImageURL']}'
+        UserFirstname=:UserFirstname,
+        UserLastname=:UserLastname,
+        UserEmail=:UserEmail,
+        UserRegistered=:UserRegistered,
+        UserLevel=:UserLevel,
+        UserYearID=:UserYearID,
+        UserUsertypeID=:UserUsertypeID,
+        UserImageURL=:UserImageURL
     `;
 };
 
@@ -51,7 +51,7 @@ model.buildReadQuery = (req, variant) => {
 
     switch(variant) {
         case 'primary':
-            where = `WHERE UserID=${id}`;
+            where = `WHERE UserID=:ID`;
         break;
 
         case 'staff':
@@ -60,7 +60,7 @@ model.buildReadQuery = (req, variant) => {
 
         case 'groups':
             table = `(${table} INNER JOIN Groupmembers ON UserID=GroupmemberUserID)`;
-            where = `WHERE GroupmemberGroupID=${id}`;
+            where = `WHERE GroupmemberGroupID=:ID`;
         break;
 
     }
