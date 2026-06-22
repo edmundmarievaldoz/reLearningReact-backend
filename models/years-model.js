@@ -1,11 +1,25 @@
-const buildReadQuery = (req, variant) => {
-    // Initialisation ----------------------
+const model = {};
 
-    let table = 'Years'; //name of table
-    let fields = [
+model.table = 'Years';
+model.fields =[
         'YearID',
         'YearName',
     ];
+
+model.buildCreateQuery = (req) => {
+        // Initialisations---------------------
+        const record = req.body;
+
+        return `INSERT INTO ${model.table} SET 
+        YearName='${record['YearName']}'
+        `;
+    };
+
+const buildReadQuery = (req, variant) => {
+    // Initialisation ----------------------
+
+    let table = model.table;
+    let fields = model.fields;
 
     // Resolve Foreign Keys -----------------
 
@@ -24,4 +38,4 @@ const buildReadQuery = (req, variant) => {
 
 };
 
-export default buildReadQuery;
+export default model;

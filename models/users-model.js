@@ -1,8 +1,7 @@
-const buildReadQuery = (req, variant) => {
-    // Initialisation ----------------------
+const model = {};
 
-    let table = 'Users'; //name of table
-    let fields = [
+model.table = 'Users'
+model.fields = [
         'UserID',
         'UserFirstname',
         'UserLastname',
@@ -13,6 +12,27 @@ const buildReadQuery = (req, variant) => {
         'UserUsertypeID',
         'UserImageURL',
     ];
+
+model.buildCreateQuery = (req) => {
+    // Initialisations---------------------
+    const record = req.body;
+
+    return `INSERT INTO ${model.table} SET 
+    UserFirstname='${record['UserFirstname']}',
+    UserLastname='${record['UserLastname']}',
+    UserEmail='${record['UserEmail']}',
+    UserRegistered='${record['UserRegistered']}',
+    UserLevel='${record['UserLevel']}',
+    UserImageURL='${record['UserImageURL']}'
+    `;
+};
+
+
+model.buildReadQuery = (req, variant) => {
+    // Initialisation ----------------------
+
+    let table = model.table; //name of table
+    let fields = model.fields;
 
     const STAFF = 1; // Primary key for staff type in unibasedatabase Usertypes table
 
@@ -49,4 +69,4 @@ const buildReadQuery = (req, variant) => {
 
 };
 
-export default buildReadQuery;
+export default model;

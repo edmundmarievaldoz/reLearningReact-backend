@@ -1,14 +1,33 @@
-const buildReadQuery = (req, variant, ) => {
-    let table = 'Modules'; //name of table
-    let fields = [
-        'ModuleID', 
-        'ModuleCode', 
-        'ModuleName', 
-        'ModuleLevel', 
-        'ModuleYearID', 
-        'ModuleLeaderID', 
-        'ModuleImageURL',
-    ];
+const model = {};
+
+model.table = 'Modules';
+model.fields = [
+    'ModuleID', 
+    'ModuleCode', 
+    'ModuleName', 
+    'ModuleLevel', 
+    'ModuleYearID', 
+    'ModuleLeaderID', 
+    'ModuleImageURL',
+];
+
+model.buildCreateQuery = (req) => {
+        // Initialisations---------------------
+        const record = req.body;
+
+        return `INSERT INTO ${model.table} SET 
+        ModuleCode='${record['ModuleCode']}',
+        ModuleName='${record['ModuleName']}',
+        ModuleLevel='${record['ModuleLevel']}',
+        ModuleYearID='${record['ModuleYearID']}',
+        ModuleLeaderID='${record['ModuleLeaderID']}',
+        ModuleImageURL='${record['ModuleImageURL']}'
+        `;
+    };
+
+model.buildReadQuery = (req, variant, ) => {
+    let table = model.table; //name of table
+    let fields = model.fields;
 
     // Resolve Foreign Keys -----------------
     
@@ -41,4 +60,4 @@ const buildReadQuery = (req, variant, ) => {
     
 };
 
-export default buildReadQuery;
+export default model;
