@@ -2,10 +2,10 @@
 import express from 'express';
 import database from './database.js';
 import Controller from './Controller.js';
-import buildReadModulesQuery from './models/modules-model.js';
-import buildReadUsersQuery from './models/users-model.js';
-import buildReadUsertypesQuery from './models/usertypes-model.js';
-import buildReadYearsQuery from './models/years-model.js';
+import modulesModel from './models/modules-model.js';
+import usersModel from './models/users-model.js';
+import usertypesModel from './models/usertypes-model.js';
+import yearsModel from './models/years-model.js';
 
 // configure express app -------------------
 const app = new express();
@@ -15,10 +15,10 @@ app.use(express.json());
 
 // controllers -----------------------------
 
-const modulesController = new Controller(buildReadModulesQuery, database);
-const usersController = new Controller(buildReadUsersQuery, database);
-const usertypesController = new Controller(buildReadUsertypesQuery, database);
-const yearsController = new Controller(buildReadYearsQuery, database);
+const modulesController = new Controller(modulesModel, database);
+const usersController = new Controller(usersModel, database);
+const usertypesController = new Controller(usertypesModel, database);
+const yearsController = new Controller(yearsModel, database);
 
 // endpoints -------------------------------
 

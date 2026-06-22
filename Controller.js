@@ -1,34 +1,11 @@
 class Controller {
-    constructor(buildReadQuery, database) {
-        this.buildReadQuery = buildReadQuery;
+    constructor(model, database) {
+        this.buildCreateQuery = model.buildCreateQuery;
+        this.buildReadQuery = model.buildReadQuery;
         this.database = database;
     }
 
     // Method
-    buildCreateQuery = (req) => {
-        // Initialisations---------------------
-        const record = req.body;
-
-        let table = 'Modules'; //name of table
-        let fields = [
-            'ModuleID', 
-            'ModuleCode', 
-            'ModuleName', 
-            'ModuleLevel', 
-            'ModuleYearID', 
-            'ModuleLeaderID', 
-            'ModuleImageURL',
-        ];
-
-        return `INSERT INTO ${table} SET 
-        ModuleCode='${record['ModuleCode']}',
-        ModuleName='${record['ModuleName']}',
-        ModuleLevel='${record['ModuleLevel']}',
-        ModuleYearID='${record['ModuleYearID']}',
-        ModuleLeaderID='${record['ModuleLeaderID']}',
-        ModuleImageURL='${record['ModuleImageURL']}'
-        `;
-    };
 
     get = async (req, res, variant) => {
         // Initialisation ----------------------
