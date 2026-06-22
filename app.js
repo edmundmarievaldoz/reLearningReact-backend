@@ -11,6 +11,7 @@ import buildReadYearsQuery from './models/years-model.js';
 const app = new express();
 
 // configure middleware --------------------
+app.use(express.json());
 
 // controllers -----------------------------
 
@@ -25,6 +26,8 @@ app.get('/api/modules', (req, res) => modulesController.get(req, res, null));
 app.get('/api/modules/:id', (req, res) =>  modulesController.get(req, res, 'primary'));
 app.get('/api/modules/leader/:id', (req, res) =>  modulesController.get(req, res, 'leader'));
 app.get('/api/modules/users/:id', (req, res) =>  modulesController.get(req, res, 'users'));
+
+app.post('/api/modules', modulesController.post);
 
 app.get('/api/users', (req, res) => usersController.get(req, res, null));
 app.get('/api/users/staff', (req, res) =>  usersController.get(req, res, 'staff'));
