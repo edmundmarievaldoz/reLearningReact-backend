@@ -8,10 +8,9 @@ model.fields = [
 
 model.buildCreateQuery = (req) => {
         // Initialisations---------------------
-        const record = req.body;
 
         return `INSERT INTO ${model.table} SET 
-        UsertypeName='${record['UsertypeName']}'
+        UsertypeName=:UsertypeName
         `;
     };
 
@@ -28,7 +27,7 @@ model.buildReadQuery = (req, variant) => {
 
     switch(variant) {
         case 'primary':
-            where = `WHERE UsertypeID=${id}`;
+            where = `WHERE UsertypeID=:ID`;
         break;
 
     }

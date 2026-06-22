@@ -11,7 +11,7 @@ model.buildCreateQuery = (req) => {
         const record = req.body;
 
         return `INSERT INTO ${model.table} SET 
-        YearName='${record['YearName']}'
+        YearName=:YearName
         `;
     };
 
@@ -29,7 +29,7 @@ const buildReadQuery = (req, variant) => {
 
     switch(variant) {
         case 'primary':
-            where = `WHERE YearID=${id}`;
+            where = `WHERE YearID=:ID`;
         break;
 
     }
