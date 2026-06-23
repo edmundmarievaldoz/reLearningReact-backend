@@ -70,4 +70,10 @@ model.buildUpdateQuery = (req) => {
         `;
     };
 
+    model.buildDeleteQuery = (req) => {
+        // Initialisations---------------------
+        return `DELETE FROM ${model.table} WHERE ModuleID=:ID`;
+    };
+
+
 export default model;

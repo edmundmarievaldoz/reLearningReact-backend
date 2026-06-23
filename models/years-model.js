@@ -46,4 +46,9 @@ model.buildUpdateQuery = (req) => {
         `;
     };
 
+model.buildDeleteQuery = (req) => {
+    // Initialisations---------------------
+    return `DELETE FROM ${model.table} WHERE YearID=:ID`;
+};
+
 export default model;
