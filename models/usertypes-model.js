@@ -36,4 +36,13 @@ model.buildReadQuery = (req, variant) => {
 
 };
 
+model.buildUpdateQuery = (req) => {
+        // Initialisations---------------------
+
+        return `UPDATE ${model.table} SET 
+        UsertypeName=:UsertypeName
+        WHERE UsertypeID=:ID
+        `;
+    };
+
 export default model;

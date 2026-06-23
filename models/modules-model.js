@@ -57,4 +57,17 @@ model.buildReadQuery = (req, variant, ) => {
     
 };
 
+model.buildUpdateQuery = (req) => {
+        // Initialisations---------------------
+        return `UPDATE ${model.table} SET 
+        ModuleCode=:ModuleCode,
+        ModuleName=:ModuleName,
+        ModuleLevel=:ModuleLevel,
+        ModuleYearID=:ModuleYearID,
+        ModuleLeaderID=:ModuleLeaderID,
+        ModuleImageURL=:ModuleImageURL
+        WHERE ModuleID=:ID
+        `;
+    };
+
 export default model;
