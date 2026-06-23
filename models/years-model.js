@@ -15,7 +15,7 @@ model.buildCreateQuery = (req) => {
         `;
     };
 
-const buildReadQuery = (req, variant) => {
+model.buildReadQuery = (req, variant) => {
     // Initialisation ----------------------
 
     let table = model.table;
@@ -37,5 +37,13 @@ const buildReadQuery = (req, variant) => {
     return `SELECT ${fields} FROM ${table} ${where}`;
 
 };
+
+model.buildUpdateQuery = (req) => {
+        // Initialisations---------------------
+        return `UPDATE ${model.table} SET 
+        YearName=:YearName
+        WHERE YearID=:ID
+        `;
+    };
 
 export default model;
